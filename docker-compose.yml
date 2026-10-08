@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: talentdesk-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: talentdesk
+      POSTGRES_PASSWORD: talentdesk
+      POSTGRES_DB: talentdesk
+    ports:
+      - "5432:5432"
+    volumes:
+      - talentdesk-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U talentdesk -d talentdesk"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  talentdesk-data:
